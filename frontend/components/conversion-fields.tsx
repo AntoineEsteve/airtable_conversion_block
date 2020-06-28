@@ -60,6 +60,19 @@ export const MemoConversionFields = memo<{
                 kilometers&#8594;yard, foot&#8594;centimeters...
               </Text>
             </li>
+            <li>
+              <Text marginBottom={1}>
+                Convert volumes &#128230;: liter&#8594;cubic&#160;meter,
+                cubic&#160;millimeter&#8594;pint,
+                milliliter&#8594;cubic&#160;inches...
+              </Text>
+            </li>
+            <li>
+              <Text marginBottom={1}>
+                Convert temperatures &#127777;: celsius&#8594;kelvin,
+                farenheit&#8594;celsius...
+              </Text>
+            </li>
           </ul>
           <Text marginBottom={2}>And much more! &#128293;</Text>
         </>

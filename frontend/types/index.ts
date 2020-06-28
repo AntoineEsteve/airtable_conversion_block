@@ -5,6 +5,7 @@ export interface AbstractConversion {
 export enum CONVERSION_TYPE {
   TEMPERATURE = "temperature",
   LENGTH = "length",
+  VOLUME = "volume",
 }
 
 interface AbstractConversionField {
@@ -57,8 +58,38 @@ export interface LengthConversionField extends AbstractConversionField {
   };
 }
 
+export enum VOLUME_UNIT {
+  // SI
+  CUBIC_MILLIMETER = "cubic_millimeter",
+  CUBIC_CENTIMETER = "cubic_centimeter",
+  CUBIC_DECIMETER = "cubic_decimeter",
+  CUBIC_METER = "cubic_meter",
+  CUBIC_KILOMETER = "cubic_kilometer",
+
+  // Non-SI
+  MILLILITER = "milliliter",
+  CENTILITER = "centiliter",
+  LITER = "liter",
+
+  // Imperial/US
+  CUBIC_INCH = "cubic_inch",
+  CUBIC_FOOT = "cubic_foot",
+  PINT = "pint",
+  GALLON = "gallon",
+  BARREL = "barrel",
+}
+
+export interface VolumeConversionField extends AbstractConversionField {
+  type: CONVERSION_TYPE.VOLUME;
+  options: {
+    sourceUnit: VOLUME_UNIT;
+    destinationUnit: VOLUME_UNIT;
+  };
+}
+
 export type ConversionField =
   | TemperatureConversionField
-  | LengthConversionField;
+  | LengthConversionField
+  | VolumeConversionField;
 
 export type ConversionFields = readonly ConversionField[];

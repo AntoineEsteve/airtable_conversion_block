@@ -1,7 +1,8 @@
 import { Field, Record } from "@airtable/blocks/models";
 import { ConversionField, CONVERSION_TYPE } from "../types";
-import { convertTemperature } from "./conversions/temperature-conversion";
 import { convertLength } from "./conversions/length-conversion";
+import { convertTemperature } from "./conversions/temperature-conversion";
+import { convertVolume } from "./conversions/volume-conversion";
 
 export const convert = async (
   record: Record,
@@ -13,5 +14,7 @@ export const convert = async (
       return convertTemperature(record, field, conversionField.options);
     case CONVERSION_TYPE.LENGTH:
       return convertLength(record, field, conversionField.options);
+    case CONVERSION_TYPE.VOLUME:
+      return convertVolume(record, field, conversionField.options);
   }
 };

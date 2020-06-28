@@ -1,10 +1,10 @@
+import Field from "@airtable/blocks/dist/types/src/models/field";
+import Table from "@airtable/blocks/dist/types/src/models/table";
 import { Box, Button } from "@airtable/blocks/ui";
 import React, { memo, useCallback } from "react";
 import { ConversionField } from "../types";
-import { EditConversionField } from "../utils/conversion-fields";
-import Field from "@airtable/blocks/dist/types/src/models/field";
-import Table from "@airtable/blocks/dist/types/src/models/table";
-import { convert } from "./convert";
+import { EditConversionField } from "./hooks/conversion-fields";
+import { useConvertAllRecords } from "./hooks/convert-all-records";
 
 export const MemoConversionField = memo<{
   selectedTable: Table;
@@ -26,26 +26,12 @@ export const MemoConversionField = memo<{
     conversionField,
   ]);
 
-  const convertAllRecords = useCallback(async () => {
-    const queryResult = await selectedTable.selectRecordsAsync();
-    const updates = await Promise.all(
-      queryResult.recordIds.map(async (recordId) => {
-        const record = queryResult.getRecordById(recordId);
-        const convertedValue = await convert(
-          record,
-          originalField,
-          conversionField
-        );
-        return {
-          id: recordId,
-          fields: {
-            [field.id]: convertedValue,
-          },
-        };
-      })
-    );
-    await selectedTable.updateRecordsAsync(updates);
-  }, [conversionField, field.id, originalField, selectedTable]);
+  const convertAllRecords = useConvertAllRecords({
+    selectedTable,
+    field,
+    originalField,
+    conversionField,
+  });
 
   return (
     <Box

@@ -1,8 +1,8 @@
 import Table from "@airtable/blocks/dist/types/src/models/table";
-import { Box, Button, Select, Label, Input } from "@airtable/blocks/ui";
+import { Box, Button, Input, Label, Select } from "@airtable/blocks/ui";
 import React, { memo, useCallback, useState } from "react";
+import { AddConversionField } from "./hooks/conversion-fields";
 import { ConversionField, CONVERSION_TYPE, TEMPERATURE_UNIT } from "../types";
-import { AddConversionField } from "../utils/conversion-fields";
 
 export const MemoEditConversionFieldForm = memo<{
   selectedTable: Table;

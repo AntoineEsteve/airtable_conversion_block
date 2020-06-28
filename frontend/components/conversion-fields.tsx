@@ -1,9 +1,9 @@
+import Table from "@airtable/blocks/dist/types/src/models/table";
 import { Box, Button } from "@airtable/blocks/ui";
 import React, { memo } from "react";
 import { ConversionFields } from "../types";
-import { EditConversionField } from "../utils/conversion-fields";
 import { MemoConversionField } from "./conversion-field";
-import Table from "@airtable/blocks/dist/types/src/models/table";
+import { EditConversionField } from "./hooks/conversion-fields";
 
 export const MemoConversionFields = memo<{
   selectedTable: Table;
@@ -25,6 +25,7 @@ export const MemoConversionFields = memo<{
       conversionField,
     }))
     .filter(({ field, originalField }) => !!field && !!originalField);
+
   return (
     <Box>
       {selectedTableConversionFields.map(

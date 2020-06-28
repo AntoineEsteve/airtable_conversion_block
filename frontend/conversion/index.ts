@@ -1,5 +1,5 @@
-import Record from "@airtable/blocks/dist/types/src/models/record";
 import Field from "@airtable/blocks/dist/types/src/models/field";
+import Record from "@airtable/blocks/dist/types/src/models/record";
 import { ConversionField, CONVERSION_TYPE } from "../types";
 import { convertTemperature } from "./conversions/temperature-conversion";
 

@@ -1,9 +1,35 @@
 import { Field, Record } from "@airtable/blocks/models";
 import { TemperatureConversionField, TEMPERATURE_UNIT } from "../../types";
 
-const celsiusToFarenheit = (temperature: number) => (temperature * 9) / 5 + 32;
-const farenheitToCelsius = (temperature: number) =>
-  ((temperature - 32) * 5) / 9;
+const convertTemperatureToCelsius = (
+  temperature: number,
+  units: TEMPERATURE_UNIT
+) => {
+  switch (units) {
+    case TEMPERATURE_UNIT.CELSIUS:
+      return temperature;
+    case TEMPERATURE_UNIT.KELVIN:
+      return temperature - 273.15;
+    case TEMPERATURE_UNIT.FARENHEIT:
+      return ((temperature - 32) * 5) / 9;
+  }
+  throw new Error(`Unknow temperature unit ${units}`);
+};
+
+const convertTemperatureFromCelsius = (
+  temperature: number,
+  units: TEMPERATURE_UNIT
+) => {
+  switch (units) {
+    case TEMPERATURE_UNIT.CELSIUS:
+      return temperature;
+    case TEMPERATURE_UNIT.KELVIN:
+      return temperature + 273.15;
+    case TEMPERATURE_UNIT.FARENHEIT:
+      return (temperature * 9) / 5 + 32;
+  }
+  throw new Error(`Unknow temperature unit ${units}`);
+};
 
 export const convertTemperature = (
   record: Record,
@@ -14,28 +40,12 @@ export const convertTemperature = (
 
   if (typeof temperature !== "number" || !Number.isFinite(temperature)) {
     throw new Error(
-      `Invalid value: number expected. Cannot convert record ${record.id}`
+      `Invalid temperature: number expected. Cannot convert record ${record.id}`
     );
   }
 
-  switch (options.sourceUnits) {
-    case TEMPERATURE_UNIT.CELSIUS:
-      switch (options.destinationUnits) {
-        case TEMPERATURE_UNIT.CELSIUS:
-          return temperature;
-        case TEMPERATURE_UNIT.FARENHEIT:
-          return celsiusToFarenheit(temperature);
-      }
-      throw new Error(`Unknown configuration unit ${options.destinationUnits}`);
-    case TEMPERATURE_UNIT.FARENHEIT:
-      switch (options.destinationUnits) {
-        case TEMPERATURE_UNIT.CELSIUS:
-          return farenheitToCelsius(temperature);
-        case TEMPERATURE_UNIT.FARENHEIT:
-          return temperature;
-      }
-      throw new Error(`Unknown configuration unit ${options.destinationUnits}`);
-  }
-
-  throw new Error(`Unknown configuration unit ${options.sourceUnits}`);
+  return convertTemperatureFromCelsius(
+    convertTemperatureToCelsius(temperature, options.sourceUnits),
+    options.destinationUnits
+  );
 };

@@ -17,6 +17,12 @@ import { saveConversionField } from "../../utils/save-conversion-field";
 import { EditConversionField } from "../hooks/conversion-fields";
 import { LabeledComponent } from "../labeled-component";
 
+const availableTemperatureUnits = [
+  { value: TEMPERATURE_UNIT.CELSIUS, label: "Celsius" },
+  { value: TEMPERATURE_UNIT.FARENHEIT, label: "Farenheit" },
+  { value: TEMPERATURE_UNIT.KELVIN, label: "Kelvin" },
+];
+
 export const MemoEditTemperatureConversionField = memo<{
   selectedTable: Table;
   conversionField?: Partial<TemperatureConversionField>;
@@ -175,8 +181,3 @@ export const MemoEditTemperatureConversionField = memo<{
     </Box>
   );
 });
-
-const availableTemperatureUnits = [
-  { value: TEMPERATURE_UNIT.CELSIUS, label: "Celsius" },
-  { value: TEMPERATURE_UNIT.FARENHEIT, label: "Farenheit" },
-];

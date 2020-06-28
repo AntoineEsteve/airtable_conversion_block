@@ -17,6 +17,7 @@ interface AbstractConversionField {
 export enum TEMPERATURE_UNIT {
   CELSIUS = "celsius",
   FARENHEIT = "farenheit",
+  KELVIN = "kelvin",
 }
 
 export interface TemperatureConversionField extends AbstractConversionField {

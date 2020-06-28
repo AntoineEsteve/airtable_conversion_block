@@ -28,7 +28,14 @@ export const MemoConversionFields = memo<{
     .filter(({ field, originalField }) => !!field && !!originalField);
 
   return (
-    <Box>
+    <Box display="flex" flexDirection="column">
+      <Button
+        onClick={startCreatingConversionField}
+        icon="plus"
+        variant="primary"
+      >
+        New conversion
+      </Button>
       {selectedTableConversionFields.map(
         ({ field, originalField, conversionField }, index) => (
           <MemoConversionField
@@ -42,9 +49,6 @@ export const MemoConversionFields = memo<{
           />
         )
       )}
-      <Button onClick={startCreatingConversionField} icon="plus">
-        New conversion
-      </Button>
     </Box>
   );
 });

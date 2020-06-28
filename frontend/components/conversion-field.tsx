@@ -19,7 +19,7 @@ export const MemoConversionField = memo<{
   field: Field;
   originalField: Field;
   conversionField: ConversionField;
-  index: number;
+  last: boolean;
   startEditingConversionField: Dispatch<
     SetStateAction<Partial<ConversionField>>
   >;
@@ -28,7 +28,7 @@ export const MemoConversionField = memo<{
   field,
   originalField,
   conversionField,
-  index,
+  last,
   startEditingConversionField,
 }) {
   const edit = useCallback(() => startEditingConversionField(conversionField), [
@@ -57,8 +57,8 @@ export const MemoConversionField = memo<{
       alignItems="center"
       loading={loading}
       loaderScale={0.3}
-      marginTop={2}
-      borderTop={index !== 0 ? "1px solid #eee" : undefined}
+      marginBottom={2}
+      borderBottom={!last ? "1px solid #eee" : undefined}
       padding={2}
     >
       <Text flex="1 1 auto" minWidth={0} marginRight={2}>

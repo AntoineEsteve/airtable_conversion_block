@@ -66,7 +66,6 @@ export const MemoEditTemperatureConversionField = memo<{
   const [precision, setPrecision] = useState<number>(
     (field?.options?.precision as number | undefined) ?? 1
   );
-  console.log("debug", { precision });
 
   const onChangePrecision = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
@@ -90,9 +89,7 @@ export const MemoEditTemperatureConversionField = memo<{
       selectedTable,
       fieldId: field?.id,
       fieldType: FieldType.NUMBER,
-      fieldOptions: {
-        precision: 1,
-      },
+      fieldOptions: { precision },
       name: name || `${originalField.name} (${destinationUnits})`,
       originalField,
       conversionType: CONVERSION_TYPE.TEMPERATURE,
@@ -108,6 +105,7 @@ export const MemoEditTemperatureConversionField = memo<{
     name,
     options,
     originalField,
+    precision,
     selectedTable,
   ]);
 

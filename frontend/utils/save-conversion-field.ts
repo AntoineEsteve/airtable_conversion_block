@@ -15,7 +15,6 @@ export async function saveConversionField<
   conversionType,
   options,
   editConversionField,
-  close,
 }: {
   selectedTable: Table;
   fieldId?: string;
@@ -26,7 +25,6 @@ export async function saveConversionField<
   conversionType: TConversionField["type"];
   options: TConversionField["options"];
   editConversionField: EditConversionField;
-  close: () => unknown;
 }) {
   let field: Field;
   if (fieldId) {
@@ -55,6 +53,4 @@ export async function saveConversionField<
   });
 
   editConversionField(conversionField);
-
-  close();
 }

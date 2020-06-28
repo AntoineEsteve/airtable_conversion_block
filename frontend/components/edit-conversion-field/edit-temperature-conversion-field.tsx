@@ -7,13 +7,14 @@ import {
   Input,
   Select,
 } from "@airtable/blocks/ui";
-import React, { memo, useCallback, useState } from "react";
+import React, { ChangeEvent, memo, useCallback, useState } from "react";
 import {
   CONVERSION_TYPE,
   TemperatureConversionField,
   TEMPERATURE_UNIT,
 } from "../../types";
 import { saveConversionField } from "../../utils/save-conversion-field";
+import { BoxWithLoader } from "../box-with-loader";
 import { EditConversionField } from "../hooks/conversion-fields";
 import { LabeledComponent } from "../labeled-component";
 
@@ -22,6 +23,9 @@ const availableTemperatureUnits = [
   { value: TEMPERATURE_UNIT.FARENHEIT, label: "Farenheit" },
   { value: TEMPERATURE_UNIT.KELVIN, label: "Kelvin" },
 ];
+
+const minPrecision = 0;
+const maxPrecision = 6;
 
 export const MemoEditTemperatureConversionField = memo<{
   selectedTable: Table;
@@ -59,12 +63,30 @@ export const MemoEditTemperatureConversionField = memo<{
     setName,
   ]);
 
+  const [precision, setPrecision] = useState<number>(
+    (field?.options?.precision as number | undefined) ?? 1
+  );
+  console.log("debug", { precision });
+
+  const onChangePrecision = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const value = Number.parseInt(event.target.value);
+      if (Number.isFinite(value)) {
+        setPrecision(Math.min(maxPrecision, Math.max(minPrecision, value)));
+      }
+    },
+    []
+  );
+
+  const [loading, setLoading] = useState(false);
+
   const save = useCallback(async () => {
     const { sourceUnits, destinationUnits } = options;
     if (!sourceUnits || !destinationUnits) {
       return;
     }
-    saveConversionField<TemperatureConversionField>({
+    setLoading(true);
+    await saveConversionField<TemperatureConversionField>({
       selectedTable,
       fieldId: field?.id,
       fieldType: FieldType.NUMBER,
@@ -76,8 +98,9 @@ export const MemoEditTemperatureConversionField = memo<{
       conversionType: CONVERSION_TYPE.TEMPERATURE,
       options: { sourceUnits, destinationUnits },
       editConversionField,
-      close,
     });
+    setLoading(false);
+    close();
   }, [
     close,
     editConversionField,
@@ -89,7 +112,7 @@ export const MemoEditTemperatureConversionField = memo<{
   ]);
 
   return (
-    <Box display="flex" flexDirection="column">
+    <BoxWithLoader display="flex" flexDirection="column" loading={loading}>
       <Heading size="small">Temperature Conversion</Heading>
 
       <LabeledComponent
@@ -117,7 +140,7 @@ export const MemoEditTemperatureConversionField = memo<{
       </LabeledComponent>
 
       <LabeledComponent
-        label="Source Field Units"
+        label="Source Field: Units"
         hint="Specify the units of the source field"
         marginTop={2}
       >
@@ -133,7 +156,7 @@ export const MemoEditTemperatureConversionField = memo<{
       </LabeledComponent>
 
       <LabeledComponent
-        label={`${field ? "Destination" : "New"} Field Units`}
+        label={`${field ? "Destination" : "New"} Field: Units`}
         hint={`Specify the units that you want in the ${
           field ? "destination" : "new"
         } field`}
@@ -152,13 +175,32 @@ export const MemoEditTemperatureConversionField = memo<{
 
       {/* The name can only be edited when creating a new field because there is no API to update or delete a field (yet?) */}
       {!field ? (
-        <LabeledComponent
-          label={`${field ? "Destination" : "New"} Field Name`}
-          hint={`Name the ${field ? "destination" : "new"} field`}
-          marginTop={2}
-        >
-          <Input value={name} onChange={onChangeName} />
-        </LabeledComponent>
+        <>
+          <LabeledComponent
+            label={`${field ? "Destination" : "New"} Field: Name`}
+            hint={`Name the ${field ? "destination" : "new"} field`}
+            marginTop={2}
+          >
+            <Input value={name} onChange={onChangeName} />
+          </LabeledComponent>
+
+          <LabeledComponent
+            label={`${field ? "Destination" : "New"} Field: Precision`}
+            hint={`Specify the maximum number of decimal digits in the ${
+              field ? "destination" : "new"
+            } field`}
+            marginTop={2}
+          >
+            <Input
+              value={precision.toString()}
+              type="number"
+              min={minPrecision}
+              max={maxPrecision}
+              step={1}
+              onChange={onChangePrecision}
+            />
+          </LabeledComponent>
+        </>
       ) : null}
 
       <Box display="flex" marginTop={2}>
@@ -178,6 +220,6 @@ export const MemoEditTemperatureConversionField = memo<{
           {field ? "Update" : "Create"}
         </Button>
       </Box>
-    </Box>
+    </BoxWithLoader>
   );
 });

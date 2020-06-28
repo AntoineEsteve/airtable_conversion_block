@@ -1,20 +1,21 @@
 import { Table } from "@airtable/blocks/models";
 import { Box, Button } from "@airtable/blocks/ui";
-import React, { memo } from "react";
-import { ConversionFields } from "../types";
+import React, { memo, Dispatch, SetStateAction } from "react";
+import { ConversionField, ConversionFields } from "../types";
 import { MemoConversionField } from "./conversion-field";
-import { EditConversionField } from "./hooks/conversion-fields";
 
 export const MemoConversionFields = memo<{
   selectedTable: Table;
   conversionFields: ConversionFields;
   startCreatingConversionField: () => unknown;
-  editConversionField: EditConversionField;
+  startEditingConversionField: Dispatch<
+    SetStateAction<Partial<ConversionField>>
+  >;
 }>(function ConversionFields({
   selectedTable,
   conversionFields,
   startCreatingConversionField,
-  editConversionField,
+  startEditingConversionField,
 }) {
   const selectedTableConversionFields = conversionFields
     .map((conversionField) => ({
@@ -37,7 +38,7 @@ export const MemoConversionFields = memo<{
             originalField={originalField}
             conversionField={conversionField}
             index={index}
-            editConversionField={editConversionField}
+            startEditingConversionField={startEditingConversionField}
           />
         )
       )}

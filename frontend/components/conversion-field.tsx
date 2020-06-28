@@ -1,9 +1,8 @@
-import { Table, Field } from "@airtable/blocks/models";
+import { Field, Table } from "@airtable/blocks/models";
 import { Box, Button } from "@airtable/blocks/ui";
-import React, { memo, useCallback } from "react";
+import React, { Dispatch, memo, SetStateAction, useCallback } from "react";
 import { ConversionField } from "../types";
-import { EditConversionField } from "./hooks/conversion-fields";
-import { useConvertAllRecords } from "./hooks/convert-all-records";
+import { convertAllRecords } from "../utils/convert-all-records";
 
 export const MemoConversionField = memo<{
   selectedTable: Table;
@@ -11,26 +10,32 @@ export const MemoConversionField = memo<{
   field: Field;
   originalField: Field;
   conversionField: ConversionField;
-  editConversionField: EditConversionField;
+  startEditingConversionField: Dispatch<
+    SetStateAction<Partial<ConversionField>>
+  >;
 }>(function ConversionField({
   selectedTable,
   index,
   field,
   originalField,
   conversionField,
-  editConversionField,
+  startEditingConversionField,
 }) {
-  const edit = useCallback(() => editConversionField(conversionField), [
-    editConversionField,
+  const edit = useCallback(() => startEditingConversionField(conversionField), [
+    startEditingConversionField,
     conversionField,
   ]);
 
-  const convertAllRecords = useConvertAllRecords({
-    selectedTable,
-    field,
-    originalField,
-    conversionField,
-  });
+  const convert = useCallback(
+    () =>
+      convertAllRecords({
+        selectedTable,
+        field,
+        originalField,
+        conversionField,
+      }),
+    [conversionField, field, originalField, selectedTable]
+  );
 
   return (
     <Box
@@ -40,12 +45,7 @@ export const MemoConversionField = memo<{
     >
       <Box flex="1 1 auto">{`${originalField.name} → ${field.name}`}</Box>
       <Button flex="0 0 auto" icon="edit" marginLeft={2} onClick={edit} />
-      <Button
-        flex="0 0 auto"
-        icon="play"
-        marginLeft={2}
-        onClick={convertAllRecords}
-      />
+      <Button flex="0 0 auto" icon="play" marginLeft={2} onClick={convert} />
     </Box>
   );
 });

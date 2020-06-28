@@ -1,8 +1,12 @@
 import { Table } from "@airtable/blocks/models";
 import { Box, Button, Heading, Select } from "@airtable/blocks/ui";
 import React, { memo, useCallback, useState } from "react";
-import { ConversionField, CONVERSION_TYPE } from "../../types";
-import { AddConversionField } from "../hooks/conversion-fields";
+import {
+  ConversionField,
+  CONVERSION_TYPE,
+  TemperatureConversionField,
+} from "../../types";
+import { EditConversionField } from "../hooks/conversion-fields";
 import { LabeledComponent } from "../labeled-component";
 import { MemoEditTemperatureConversionField } from "./edit-temperature-conversion-field";
 
@@ -14,12 +18,12 @@ const availableConversionTypes = [
 export const MemoEditConversionField = memo<{
   selectedTable: Table;
   conversionField?: Partial<ConversionField>;
-  addConversionField: AddConversionField;
+  editConversionField: EditConversionField;
   close: () => unknown;
 }>(function EditConversionField({
   selectedTable,
   conversionField,
-  addConversionField,
+  editConversionField,
   close,
 }) {
   const [conversionType, setConversionType] = useState<CONVERSION_TYPE>(
@@ -35,8 +39,8 @@ export const MemoEditConversionField = memo<{
         conversionType === CONVERSION_TYPE.TEMPERATURE ? (
           <MemoEditTemperatureConversionField
             selectedTable={selectedTable}
-            conversionField={conversionField}
-            addConversionField={addConversionField}
+            conversionField={conversionField as TemperatureConversionField}
+            editConversionField={editConversionField}
             close={close}
           />
         ) : (

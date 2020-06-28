@@ -12,15 +12,6 @@ export function useConversionFields() {
     | ConversionFields
     | undefined;
 
-  const addConversionField = useCallback(
-    (conversionField: ConversionField) =>
-      globalConfig.setAsync(CONVERSION_FIELDS_KEY, [
-        ...conversionFields,
-        conversionField,
-      ] as any),
-    [conversionFields, globalConfig]
-  );
-
   const editConversionField = useCallback(
     (conversionField: ConversionField) =>
       globalConfig.setAsync(
@@ -40,12 +31,8 @@ export function useConversionFields() {
     [conversionFields, globalConfig]
   );
 
-  return { conversionFields, addConversionField, editConversionField };
+  return { conversionFields, editConversionField };
 }
-
-export type AddConversionField = ReturnType<
-  typeof useConversionFields
->["addConversionField"];
 
 export type EditConversionField = ReturnType<
   typeof useConversionFields

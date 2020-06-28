@@ -9,25 +9,29 @@ import {
 } from "@airtable/blocks/ui";
 import React, { memo, useCallback, useState } from "react";
 import {
-  ConversionField,
   CONVERSION_TYPE,
   TemperatureConversionField,
   TEMPERATURE_UNIT,
 } from "../../types";
-import { AddConversionField } from "../hooks/conversion-fields";
+import { saveConversionField } from "../../utils/save-conversion-field";
+import { EditConversionField } from "../hooks/conversion-fields";
 import { LabeledComponent } from "../labeled-component";
 
 export const MemoEditTemperatureConversionField = memo<{
   selectedTable: Table;
-  conversionField?: Partial<ConversionField>;
-  addConversionField: AddConversionField;
+  conversionField?: Partial<TemperatureConversionField>;
+  editConversionField: EditConversionField;
   close: () => unknown;
 }>(function EditTemperatureConversionField({
   selectedTable,
   conversionField,
-  addConversionField,
+  editConversionField,
   close,
 }) {
+  const field = conversionField.fieldId
+    ? selectedTable.getFieldByIdIfExists(conversionField.fieldId)
+    : undefined;
+
   const [originalFieldId, setOriginalFieldId] = useState<string>(
     conversionField.originalFieldId
   );
@@ -38,43 +42,44 @@ export const MemoEditTemperatureConversionField = memo<{
 
   const [options, setOptions] = useState<
     Partial<TemperatureConversionField["options"]>
-  >({});
+  >({
+    sourceUnits: conversionField?.options?.sourceUnits,
+    destinationUnits: conversionField?.options?.destinationUnits,
+  });
 
-  const [name, setName] = useState("");
+  const [name, setName] = useState(field?.name || "");
 
   const onChangeName = useCallback((event) => setName(event.target.value), [
     setName,
   ]);
 
   const save = useCallback(async () => {
-    const { destinationUnits, sourceUnits } = options;
-    if (!originalField || !destinationUnits || !sourceUnits) {
+    const { sourceUnits, destinationUnits } = options;
+    if (!sourceUnits || !destinationUnits) {
       return;
     }
-    if (conversionField.fieldId) {
-      return console.error("TODO: EDITING");
-    } else {
-      const field = await selectedTable.unstable_createFieldAsync(
-        name || `${originalField.name} (COPY)`,
-        FieldType.NUMBER,
-        {}
-      );
-      addConversionField({
-        originalFieldId: originalField.id,
-        fieldId: field.id,
-        type: CONVERSION_TYPE.TEMPERATURE,
-        options: { sourceUnits, destinationUnits },
-      });
-      close();
-    }
+    saveConversionField<TemperatureConversionField>({
+      selectedTable,
+      fieldId: field?.id,
+      fieldType: FieldType.NUMBER,
+      fieldOptions: {
+        precision: 1,
+      },
+      name: name || `${originalField.name} (${destinationUnits})`,
+      originalField,
+      conversionType: CONVERSION_TYPE.TEMPERATURE,
+      options: { sourceUnits, destinationUnits },
+      editConversionField,
+      close,
+    });
   }, [
-    originalField,
-    conversionField.fieldId,
-    selectedTable,
-    name,
-    addConversionField,
-    options,
     close,
+    editConversionField,
+    field,
+    name,
+    options,
+    originalField,
+    selectedTable,
   ]);
 
   return (
@@ -106,7 +111,7 @@ export const MemoEditTemperatureConversionField = memo<{
       </LabeledComponent>
 
       <LabeledComponent
-        label="Source Units"
+        label="Source Field Units"
         hint="Specify the units of the source field"
         marginTop={2}
       >
@@ -122,8 +127,10 @@ export const MemoEditTemperatureConversionField = memo<{
       </LabeledComponent>
 
       <LabeledComponent
-        label="Destination Units"
-        hint="Specify the units that you want in your new field"
+        label={`${field ? "Destination" : "New"} Field Units`}
+        hint={`Specify the units that you want in the ${
+          field ? "destination" : "new"
+        } field`}
         marginTop={2}
       >
         <Select
@@ -137,17 +144,34 @@ export const MemoEditTemperatureConversionField = memo<{
         />
       </LabeledComponent>
 
-      <LabeledComponent
-        label="Destination Field Name"
-        hint="Please name your new field"
-        marginTop={2}
-      >
-        <Input value={name} onChange={onChangeName} />
-      </LabeledComponent>
+      {/* The name can only be edited when creating a new field because there is no API to update or delete a field (yet?) */}
+      {!field ? (
+        <LabeledComponent
+          label={`${field ? "Destination" : "New"} Field Name`}
+          hint={`Name the ${field ? "destination" : "new"} field`}
+          marginTop={2}
+        >
+          <Input value={name} onChange={onChangeName} />
+        </LabeledComponent>
+      ) : null}
 
-      <Button icon="check" onClick={save} marginTop={2}>
-        Save
-      </Button>
+      <Box display="flex" marginTop={2}>
+        <Button flex="1 0 auto" icon="chevronLeft" onClick={close}>
+          Cancel
+        </Button>
+        <Button
+          flex="1 0 auto"
+          variant="primary"
+          icon="check"
+          onClick={save}
+          disabled={
+            !originalField || !options.sourceUnits || !options.destinationUnits
+          }
+          marginLeft={1}
+        >
+          {field ? "Update" : "Create"}
+        </Button>
+      </Box>
     </Box>
   );
 });

@@ -11,11 +11,7 @@ export function ConversionBlock() {
 
   const selectedTable = useSelectedTable(base);
 
-  const {
-    conversionFields,
-    addConversionField,
-    editConversionField,
-  } = useConversionFields();
+  const { conversionFields, editConversionField } = useConversionFields();
 
   const [editingConversionField, startEditingConversionField] = useState<
     Partial<ConversionField>
@@ -43,7 +39,7 @@ export function ConversionBlock() {
         <MemoEditConversionField
           selectedTable={selectedTable}
           conversionField={editingConversionField}
-          addConversionField={addConversionField}
+          editConversionField={editConversionField}
           close={stopEditingConversionField}
         />
       ) : (
@@ -51,7 +47,7 @@ export function ConversionBlock() {
           selectedTable={selectedTable}
           conversionFields={conversionFields}
           startCreatingConversionField={startCreatingConversionField}
-          editConversionField={editConversionField}
+          startEditingConversionField={startEditingConversionField}
         />
       )}
     </Box>

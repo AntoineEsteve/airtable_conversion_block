@@ -1,7 +1,7 @@
 import { useGlobalConfig } from "@airtable/blocks/ui";
 import { produce } from "immer";
 import { useCallback } from "react";
-import { ConversionField, ConversionFields } from "../types/conversion-field";
+import { ConversionField, ConversionFields } from "../types";
 
 const CONVERSION_FIELDS_KEY = "GLOBAL_CONFIG_CONVERSION_FIELD";
 

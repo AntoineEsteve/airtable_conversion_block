@@ -1,8 +1,8 @@
 import { Box, Button } from "@airtable/blocks/ui";
 import React, { memo } from "react";
-import { ConversionFields } from "../types/conversion-field";
+import { ConversionFields } from "../types";
 import { EditConversionField } from "../utils/conversion-fields";
-import { MemoConversionFieldRow } from "./conversion-field-row";
+import { MemoConversionField } from "./conversion-field";
 import Table from "@airtable/blocks/dist/types/src/models/table";
 
 export const MemoConversionFields = memo<{
@@ -29,8 +29,9 @@ export const MemoConversionFields = memo<{
     <Box>
       {selectedTableConversionFields.map(
         ({ field, originalField, conversionField }, index) => (
-          <MemoConversionFieldRow
+          <MemoConversionField
             key={index}
+            selectedTable={selectedTable}
             field={field}
             originalField={originalField}
             conversionField={conversionField}

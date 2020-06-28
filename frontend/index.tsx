@@ -2,7 +2,7 @@ import { Box, initializeBlock, Loader, useBase } from "@airtable/blocks/ui";
 import React, { useCallback, useState } from "react";
 import { MemoConversionFields } from "./conversion-field/conversion-fields";
 import { MemoEditConversionFieldForm } from "./conversion-field/edit-conversion-field-form";
-import { ConversionField } from "./types/conversion-field";
+import { ConversionField } from "./types";
 import { useConversionFields } from "./utils/conversion-fields";
 import { useSelectedTable } from "./utils/selected-table";
 

@@ -4,7 +4,7 @@ export interface AbstractConversion {
 
 export enum CONVERSION_TYPE {
   TEMPERATURE = "temperature",
-  DISTANCE = "distance",
+  LENGTH = "length",
 }
 
 interface AbstractConversionField {
@@ -28,13 +28,37 @@ export interface TemperatureConversionField extends AbstractConversionField {
   };
 }
 
-export interface DistanceConversionField extends AbstractConversionField {
-  type: CONVERSION_TYPE.DISTANCE;
-  options: any; // TODO
+export enum LENGTH_UNIT {
+  // METRIC
+  KILOMETER = "kilometer",
+  HECTOMETER = "hectometer",
+  DECAMETER = "decameter",
+  METER = "meter",
+  DECIMETER = "decimeter",
+  CENTIMETER = "centimer",
+  MILLIMETER = "millimeter",
+  MICROMETER = "micrometer",
+  NANOMETER = "nanometer",
+
+  // IMPERIAL/US
+  THOU = "thou",
+  LINE = "line",
+  INCH = "inch",
+  FOOT = "foot",
+  YARD = "yard",
+  MILE = "mile",
+}
+
+export interface LengthConversionField extends AbstractConversionField {
+  type: CONVERSION_TYPE.LENGTH;
+  options: {
+    sourceUnits: LENGTH_UNIT;
+    destinationUnits: LENGTH_UNIT;
+  };
 }
 
 export type ConversionField =
   | TemperatureConversionField
-  | DistanceConversionField;
+  | LengthConversionField;
 
 export type ConversionFields = readonly ConversionField[];

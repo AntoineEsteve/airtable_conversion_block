@@ -13,7 +13,6 @@ const convertTemperatureToCelsius = (
     case TEMPERATURE_UNIT.FARENHEIT:
       return ((temperature - 32) * 5) / 9;
   }
-  throw new Error(`Unknow temperature unit ${units}`);
 };
 
 const convertTemperatureFromCelsius = (
@@ -28,7 +27,6 @@ const convertTemperatureFromCelsius = (
     case TEMPERATURE_UNIT.FARENHEIT:
       return (temperature * 9) / 5 + 32;
   }
-  throw new Error(`Unknow temperature unit ${units}`);
 };
 
 export const convertTemperature = (

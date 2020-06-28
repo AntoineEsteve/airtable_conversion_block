@@ -5,13 +5,15 @@ import {
   ConversionField,
   CONVERSION_TYPE,
   TemperatureConversionField,
+  LengthConversionField,
 } from "../../types";
 import { EditConversionField } from "../hooks/conversion-fields";
 import { LabeledComponent } from "../labeled-component";
 import { MemoEditTemperatureConversionField } from "./edit-temperature-conversion-field";
+import { MemoEditLengthConversionField } from "./edit-length-conversion-field";
 
 const availableConversionTypes = [
-  { value: CONVERSION_TYPE.DISTANCE, label: "Distance" },
+  { value: CONVERSION_TYPE.LENGTH, label: "Length" },
   { value: CONVERSION_TYPE.TEMPERATURE, label: "Temperature" },
 ];
 
@@ -43,8 +45,15 @@ export const MemoEditConversionField = memo<{
             editConversionField={editConversionField}
             close={close}
           />
+        ) : conversionType === CONVERSION_TYPE.LENGTH ? (
+          <MemoEditLengthConversionField
+            selectedTable={selectedTable}
+            conversionField={conversionField as LengthConversionField}
+            editConversionField={editConversionField}
+            close={close}
+          />
         ) : (
-          "TODO: DISTANCE FORM"
+          `Sorry the conversion "${conversionType}" is not implemented yet`
         )
       ) : (
         <>

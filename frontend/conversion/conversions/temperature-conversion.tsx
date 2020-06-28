@@ -1,5 +1,4 @@
-import Field from "@airtable/blocks/dist/types/src/models/field";
-import Record from "@airtable/blocks/dist/types/src/models/record";
+import { Field, Record } from "@airtable/blocks/models";
 import { TemperatureConversionField, TEMPERATURE_UNIT } from "../../types";
 
 const celsiusToFarenheit = (temperature: number) => (temperature * 9) / 5 + 32;

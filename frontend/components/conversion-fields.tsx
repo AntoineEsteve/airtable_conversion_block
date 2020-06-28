@@ -1,4 +1,4 @@
-import Table from "@airtable/blocks/dist/types/src/models/table";
+import { Table } from "@airtable/blocks/models";
 import { Box, Button } from "@airtable/blocks/ui";
 import React, { memo } from "react";
 import { ConversionFields } from "../types";

@@ -1,5 +1,4 @@
-import Field from "@airtable/blocks/dist/types/src/models/field";
-import Table from "@airtable/blocks/dist/types/src/models/table";
+import { Table, Field } from "@airtable/blocks/models";
 import chunk from "lodash/chunk";
 import { useCallback } from "react";
 import { convert } from "../../conversion";

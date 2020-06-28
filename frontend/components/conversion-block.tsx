@@ -1,8 +1,8 @@
 import { Box, Loader, useBase } from "@airtable/blocks/ui";
 import React, { useCallback, useState } from "react";
-import { MemoEditConversionFieldForm } from "./edit-conversion-field-form";
 import { ConversionField } from "../types";
 import { MemoConversionFields } from "./conversion-fields";
+import { MemoEditConversionField } from "./edit-conversion-field/edit-conversion-field";
 import { useConversionFields } from "./hooks/conversion-fields";
 import { useSelectedTable } from "./hooks/selected-table";
 
@@ -40,7 +40,7 @@ export function ConversionBlock() {
   return (
     <Box padding={2} overflow="auto">
       {editingConversionField ? (
-        <MemoEditConversionFieldForm
+        <MemoEditConversionField
           selectedTable={selectedTable}
           conversionField={editingConversionField}
           addConversionField={addConversionField}

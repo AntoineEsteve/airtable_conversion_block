@@ -28,7 +28,7 @@ export interface TemperatureConversionField extends AbstractConversionField {
 }
 
 export interface DistanceConversionField extends AbstractConversionField {
-  type: CONVERSION_TYPE.TEMPERATURE;
+  type: CONVERSION_TYPE.DISTANCE;
   options: any; // TODO
 }
 

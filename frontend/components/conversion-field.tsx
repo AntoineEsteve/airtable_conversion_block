@@ -1,5 +1,5 @@
 import { Field, Table } from "@airtable/blocks/models";
-import { Button, Icon, Text } from "@airtable/blocks/ui";
+import { Button, Icon, Text, Tooltip } from "@airtable/blocks/ui";
 import React, {
   Dispatch,
   memo,
@@ -11,6 +11,7 @@ import { ConversionField } from "../types";
 import { convertAllRecords } from "../utils/convert-all-records";
 import { BoxWithLoader } from "./box-with-loader";
 import { TextEllipsis } from "./text-ellipsis";
+import { RefreshIcon } from "./refresh-icon";
 
 export const MemoConversionField = memo<{
   selectedTable: Table;
@@ -63,8 +64,14 @@ export const MemoConversionField = memo<{
           <Icon name="formula" size={10} marginRight={1} /> {originalField.name}
         </TextEllipsis>
       </Text>
-      <Button flex="0 0 auto" icon="edit" marginLeft={2} onClick={edit} />
-      <Button flex="0 0 auto" icon="play" marginLeft={2} onClick={convert} />
+      <Tooltip content="Edit options">
+        <Button flex="0 0 auto" icon="cog" marginLeft={2} onClick={edit} />
+      </Tooltip>
+      <Tooltip content="Refresh">
+        <Button flex="0 0 auto" marginLeft={2} onClick={convert}>
+          <RefreshIcon />
+        </Button>
+      </Tooltip>
     </BoxWithLoader>
   );
 });

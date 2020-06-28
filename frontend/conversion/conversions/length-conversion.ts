@@ -1,8 +1,8 @@
 import { Field, Record } from "@airtable/blocks/models";
 import { LengthConversionField, LENGTH_UNIT } from "../../types";
 
-const convertLengthToMeter = (length: number, units: LENGTH_UNIT) => {
-  switch (units) {
+const convertLengthToMeter = (length: number, unit: LENGTH_UNIT) => {
+  switch (unit) {
     // METRIC
     case LENGTH_UNIT.KILOMETER:
       return length * 1000;
@@ -39,8 +39,8 @@ const convertLengthToMeter = (length: number, units: LENGTH_UNIT) => {
   }
 };
 
-const convertLengthFromMeter = (length: number, units: LENGTH_UNIT) => {
-  switch (units) {
+const convertLengthFromMeter = (length: number, unit: LENGTH_UNIT) => {
+  switch (unit) {
     // METRIC
     case LENGTH_UNIT.KILOMETER:
       return length / 1000;
@@ -91,7 +91,7 @@ export const convertLength = (
   }
 
   return convertLengthFromMeter(
-    convertLengthToMeter(temperature, options.sourceUnits),
-    options.destinationUnits
+    convertLengthToMeter(temperature, options.sourceUnit),
+    options.destinationUnit
   );
 };

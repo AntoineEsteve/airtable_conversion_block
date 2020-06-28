@@ -3,9 +3,9 @@ import { TemperatureConversionField, TEMPERATURE_UNIT } from "../../types";
 
 const convertTemperatureToCelsius = (
   temperature: number,
-  units: TEMPERATURE_UNIT
+  unit: TEMPERATURE_UNIT
 ) => {
-  switch (units) {
+  switch (unit) {
     case TEMPERATURE_UNIT.CELSIUS:
       return temperature;
     case TEMPERATURE_UNIT.KELVIN:
@@ -17,9 +17,9 @@ const convertTemperatureToCelsius = (
 
 const convertTemperatureFromCelsius = (
   temperature: number,
-  units: TEMPERATURE_UNIT
+  unit: TEMPERATURE_UNIT
 ) => {
-  switch (units) {
+  switch (unit) {
     case TEMPERATURE_UNIT.CELSIUS:
       return temperature;
     case TEMPERATURE_UNIT.KELVIN:
@@ -43,7 +43,7 @@ export const convertTemperature = (
   }
 
   return convertTemperatureFromCelsius(
-    convertTemperatureToCelsius(temperature, options.sourceUnits),
-    options.destinationUnits
+    convertTemperatureToCelsius(temperature, options.sourceUnit),
+    options.destinationUnit
   );
 };

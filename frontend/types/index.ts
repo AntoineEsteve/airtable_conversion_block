@@ -23,8 +23,8 @@ export enum TEMPERATURE_UNIT {
 export interface TemperatureConversionField extends AbstractConversionField {
   type: CONVERSION_TYPE.TEMPERATURE;
   options: {
-    sourceUnits: TEMPERATURE_UNIT;
-    destinationUnits: TEMPERATURE_UNIT;
+    sourceUnit: TEMPERATURE_UNIT;
+    destinationUnit: TEMPERATURE_UNIT;
   };
 }
 
@@ -52,8 +52,8 @@ export enum LENGTH_UNIT {
 export interface LengthConversionField extends AbstractConversionField {
   type: CONVERSION_TYPE.LENGTH;
   options: {
-    sourceUnits: LENGTH_UNIT;
-    destinationUnits: LENGTH_UNIT;
+    sourceUnit: LENGTH_UNIT;
+    destinationUnit: LENGTH_UNIT;
   };
 }
 

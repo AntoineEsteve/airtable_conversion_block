@@ -68,8 +68,8 @@ export const MemoEditLengthConversionField = memo<{
   const [options, setOptions] = useState<
     Partial<LengthConversionField["options"]>
   >({
-    sourceUnits: conversionField?.options?.sourceUnits,
-    destinationUnits: conversionField?.options?.destinationUnits,
+    sourceUnit: conversionField?.options?.sourceUnit,
+    destinationUnit: conversionField?.options?.destinationUnit,
   });
 
   const [name, setName] = useState(field?.name || "");
@@ -95,8 +95,8 @@ export const MemoEditLengthConversionField = memo<{
   const [loading, setLoading] = useState(false);
 
   const save = useCallback(async () => {
-    const { sourceUnits, destinationUnits } = options;
-    if (!sourceUnits || !destinationUnits) {
+    const { sourceUnit, destinationUnit } = options;
+    if (!sourceUnit || !destinationUnit) {
       return;
     }
     setLoading(true);
@@ -105,10 +105,10 @@ export const MemoEditLengthConversionField = memo<{
       fieldId: field?.id,
       fieldType: FieldType.NUMBER,
       fieldOptions: { precision },
-      name: name || `${originalField.name} (${destinationUnits})`,
+      name: name || `${originalField.name} (${destinationUnit})`,
       originalField,
       conversionType: CONVERSION_TYPE.LENGTH,
-      options: { sourceUnits, destinationUnits },
+      options: { sourceUnit, destinationUnit },
       editConversionField,
     });
     setLoading(false);
@@ -126,10 +126,14 @@ export const MemoEditLengthConversionField = memo<{
 
   return (
     <BoxWithLoader display="flex" flexDirection="column" loading={loading}>
-      <Heading size="small">Length Conversion</Heading>
+      <Heading size="small">Length Conversion &#128207;</Heading>
+
+      <Heading size="xsmall" marginTop={3}>
+        Source field
+      </Heading>
 
       <LabeledComponent
-        label="Source Field"
+        label="Field"
         hint="Select the field you want to convert"
         error={
           originalField && originalField.type !== FieldType.NUMBER
@@ -153,34 +157,37 @@ export const MemoEditLengthConversionField = memo<{
       </LabeledComponent>
 
       <LabeledComponent
-        label="Source Field: Units"
-        hint="Specify the units of the source field"
+        label="Unit"
+        hint="Specify the unit used in the source field"
         marginTop={2}
       >
         <Select
           options={availableLengthUnits}
-          value={options.sourceUnits}
+          value={options.sourceUnit}
           onChange={useCallback(
-            (units: LENGTH_UNIT) =>
-              setOptions({ ...options, sourceUnits: units }),
+            (unit: LENGTH_UNIT) => setOptions({ ...options, sourceUnit: unit }),
             [options, setOptions]
           )}
         />
       </LabeledComponent>
 
+      <Heading size="xsmall" marginTop={3}>
+        {field ? "Destination field" : "New field"}
+      </Heading>
+
       <LabeledComponent
-        label={`${field ? "Destination" : "New"} Field: Units`}
-        hint={`Specify the units that you want in the ${
+        label="Unit"
+        hint={`Specify the unit that you want in the ${
           field ? "destination" : "new"
         } field`}
         marginTop={2}
       >
         <Select
           options={availableLengthUnits}
-          value={options.destinationUnits}
+          value={options.destinationUnit}
           onChange={useCallback(
-            (units: LENGTH_UNIT) =>
-              setOptions({ ...options, destinationUnits: units }),
+            (unit: LENGTH_UNIT) =>
+              setOptions({ ...options, destinationUnit: unit }),
             [options, setOptions]
           )}
         />
@@ -190,15 +197,15 @@ export const MemoEditLengthConversionField = memo<{
       {!field ? (
         <>
           <LabeledComponent
-            label={`${field ? "Destination" : "New"} Field: Name`}
-            hint={`Name the ${field ? "destination" : "new"} field`}
+            label="Name"
+            hint={`Give a name to the ${field ? "destination" : "new"} field`}
             marginTop={2}
           >
             <Input value={name} onChange={onChangeName} />
           </LabeledComponent>
 
           <LabeledComponent
-            label={`${field ? "Destination" : "New"} Field: Precision`}
+            label="Precision"
             hint={`Specify the maximum number of decimal digits in the ${
               field ? "destination" : "new"
             } field`}
@@ -216,7 +223,7 @@ export const MemoEditLengthConversionField = memo<{
         </>
       ) : null}
 
-      <Box display="flex" marginTop={2}>
+      <Box display="flex" marginTop={3}>
         <Button flex="1 0 auto" icon="chevronLeft" onClick={close}>
           Cancel
         </Button>
@@ -226,7 +233,7 @@ export const MemoEditLengthConversionField = memo<{
           icon="check"
           onClick={save}
           disabled={
-            !originalField || !options.sourceUnits || !options.destinationUnits
+            !originalField || !options.sourceUnit || !options.destinationUnit
           }
           marginLeft={1}
         >

@@ -8,7 +8,7 @@ export const RefreshIcon: FC = () => (
     height="12"
     viewBox="0 0 12 12"
     className="mr-half"
-    style={{ shapeRendering: "geometricPrecision" }}
+    style={{ shapeRendering: "geometricPrecision", verticalAlign: "middle" }}
   >
     <path
       fillRule="evenodd"

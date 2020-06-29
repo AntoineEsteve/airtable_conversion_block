@@ -1,20 +1,20 @@
 import { Table } from "@airtable/blocks/models";
 import { Box, Button, Heading, Select } from "@airtable/blocks/ui";
-import React, { memo, useCallback, useState } from "react";
+import React, { FC, useCallback, useState } from "react";
 import {
   ConversionField,
   CONVERSION_TYPE,
-  TemperatureConversionField,
-  LengthConversionField,
-  VolumeConversionField,
   CurrencyConversionField,
+  LengthConversionField,
+  TemperatureConversionField,
+  VolumeConversionField,
 } from "../../types";
 import { EditConversionField } from "../hooks/conversion-fields";
 import { LabeledComponent } from "../labeled-component";
-import { MemoEditTemperatureConversionField } from "./edit-temperature-conversion-field";
-import { MemoEditLengthConversionField } from "./edit-length-conversion-field";
-import { MemoEditVolumeConversionField } from "./edit-volume-conversion-field";
-import { MemoEditCurrencyConversionField } from "./edit-currency-conversion-field";
+import { EditCurrencyConversionFieldComponent } from "./edit-currency-conversion-field";
+import { EditLengthConversionFieldComponent } from "./edit-length-conversion-field";
+import { EditTemperatureConversionFieldComponent } from "./edit-temperature-conversion-field";
+import { EditVolumeConversionFieldComponent } from "./edit-volume-conversion-field";
 
 const availableConversionTypes = [
   { value: CONVERSION_TYPE.CURRENCY, label: "Currency" },
@@ -23,17 +23,12 @@ const availableConversionTypes = [
   { value: CONVERSION_TYPE.TEMPERATURE, label: "Temperature" },
 ];
 
-export const MemoEditConversionField = memo<{
+export const EditConversionFieldComponent: FC<{
   selectedTable: Table;
   conversionField?: Partial<ConversionField>;
   editConversionField: EditConversionField;
   close: () => unknown;
-}>(function EditConversionField({
-  selectedTable,
-  conversionField,
-  editConversionField,
-  close,
-}) {
+}> = ({ selectedTable, conversionField, editConversionField, close }) => {
   const [conversionType, setConversionType] = useState<CONVERSION_TYPE>(
     conversionField.type
   );
@@ -45,28 +40,28 @@ export const MemoEditConversionField = memo<{
     <Box display="flex" flexDirection="column">
       {step === "options" && conversionType ? (
         conversionType === CONVERSION_TYPE.TEMPERATURE ? (
-          <MemoEditTemperatureConversionField
+          <EditTemperatureConversionFieldComponent
             selectedTable={selectedTable}
             conversionField={conversionField as TemperatureConversionField}
             editConversionField={editConversionField}
             close={close}
           />
         ) : conversionType === CONVERSION_TYPE.LENGTH ? (
-          <MemoEditLengthConversionField
+          <EditLengthConversionFieldComponent
             selectedTable={selectedTable}
             conversionField={conversionField as LengthConversionField}
             editConversionField={editConversionField}
             close={close}
           />
         ) : conversionType === CONVERSION_TYPE.VOLUME ? (
-          <MemoEditVolumeConversionField
+          <EditVolumeConversionFieldComponent
             selectedTable={selectedTable}
             conversionField={conversionField as VolumeConversionField}
             editConversionField={editConversionField}
             close={close}
           />
         ) : conversionType === CONVERSION_TYPE.CURRENCY ? (
-          <MemoEditCurrencyConversionField
+          <EditCurrencyConversionFieldComponent
             selectedTable={selectedTable}
             conversionField={conversionField as CurrencyConversionField}
             editConversionField={editConversionField}
@@ -106,4 +101,4 @@ export const MemoEditConversionField = memo<{
       )}
     </Box>
   );
-});
+};

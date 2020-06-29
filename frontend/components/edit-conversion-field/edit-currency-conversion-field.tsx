@@ -7,11 +7,11 @@ import {
   Input,
   Select,
 } from "@airtable/blocks/ui";
-import React, { ChangeEvent, memo, useCallback, useState } from "react";
+import React, { ChangeEvent, FC, useCallback, useState } from "react";
 import {
   CONVERSION_TYPE,
-  CurrencyConversionField,
   CURRENCY,
+  CurrencyConversionField,
 } from "../../types";
 import { saveConversionField } from "../../utils/save-conversion-field";
 import { BoxWithLoader } from "../box-with-loader";
@@ -74,17 +74,12 @@ const tryToGuessCurrencyFromField = (field?: Field) => {
 const minPrecision = 0;
 const maxPrecision = 7;
 
-export const MemoEditCurrencyConversionField = memo<{
+export const EditCurrencyConversionFieldComponent: FC<{
   selectedTable: Table;
   conversionField?: Partial<CurrencyConversionField>;
   editConversionField: EditConversionField;
   close: () => unknown;
-}>(function EditCurrencyConversionField({
-  selectedTable,
-  conversionField,
-  editConversionField,
-  close,
-}) {
+}> = ({ selectedTable, conversionField, editConversionField, close }) => {
   const field = conversionField.fieldId
     ? selectedTable.getFieldByIdIfExists(conversionField.fieldId)
     : undefined;
@@ -290,4 +285,4 @@ export const MemoEditCurrencyConversionField = memo<{
       </Box>
     </BoxWithLoader>
   );
-});
+};

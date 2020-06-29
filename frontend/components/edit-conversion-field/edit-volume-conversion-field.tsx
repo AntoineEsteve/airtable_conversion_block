@@ -7,7 +7,7 @@ import {
   Input,
   Select,
 } from "@airtable/blocks/ui";
-import React, { ChangeEvent, memo, useCallback, useState } from "react";
+import React, { ChangeEvent, FC, useCallback, useState } from "react";
 import {
   CONVERSION_TYPE,
   VolumeConversionField,
@@ -43,17 +43,12 @@ const minPrecision = 0;
 const maxPrecision = 8;
 const defaultPrecision = 1;
 
-export const MemoEditVolumeConversionField = memo<{
+export const EditVolumeConversionFieldComponent: FC<{
   selectedTable: Table;
   conversionField?: Partial<VolumeConversionField>;
   editConversionField: EditConversionField;
   close: () => unknown;
-}>(function EditVolumeConversionField({
-  selectedTable,
-  conversionField,
-  editConversionField,
-  close,
-}) {
+}> = ({ selectedTable, conversionField, editConversionField, close }) => {
   const field = conversionField.fieldId
     ? selectedTable.getFieldByIdIfExists(conversionField.fieldId)
     : undefined;
@@ -243,4 +238,4 @@ export const MemoEditVolumeConversionField = memo<{
       </Box>
     </BoxWithLoader>
   );
-});
+};

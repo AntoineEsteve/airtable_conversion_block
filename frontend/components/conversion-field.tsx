@@ -1,20 +1,20 @@
 import { Field, Table } from "@airtable/blocks/models";
-import { Button, Icon, Text, Dialog, Heading } from "@airtable/blocks/ui";
+import { Button, Dialog, Heading, Icon, Text } from "@airtable/blocks/ui";
 import React, {
   Dispatch,
-  memo,
   SetStateAction,
   useCallback,
   useState,
+  FC,
 } from "react";
 import { ConversionField } from "../types";
 import { convertAllRecords } from "../utils/convert-all-records";
 import { BoxWithLoader } from "./box-with-loader";
+import { useToggle } from "./hooks/toggle";
 import { RefreshIcon } from "./refresh-icon";
 import { TextEllipsis } from "./text-ellipsis";
-import { useToggle } from "./hooks/toggle";
 
-export const MemoConversionField = memo<{
+export const ConversionFieldComponent: FC<{
   selectedTable: Table;
   field: Field;
   originalField: Field;
@@ -23,14 +23,14 @@ export const MemoConversionField = memo<{
   startEditingConversionField: Dispatch<
     SetStateAction<Partial<ConversionField>>
   >;
-}>(function ConversionField({
+}> = ({
   selectedTable,
   field,
   originalField,
   conversionField,
   last,
   startEditingConversionField,
-}) {
+}) => {
   const edit = useCallback(() => startEditingConversionField(conversionField), [
     startEditingConversionField,
     conversionField,
@@ -117,4 +117,4 @@ export const MemoConversionField = memo<{
       )}
     </BoxWithLoader>
   );
-});
+};

@@ -1,22 +1,22 @@
 import { Table } from "@airtable/blocks/models";
 import { Box, Button, Heading, Text } from "@airtable/blocks/ui";
-import React, { memo, Dispatch, SetStateAction } from "react";
+import React, { Dispatch, FC, SetStateAction } from "react";
 import { ConversionField, ConversionFields } from "../types";
-import { MemoConversionField } from "./conversion-field";
+import { ConversionFieldComponent } from "./conversion-field";
 
-export const MemoConversionFields = memo<{
+export const ConversionFieldsComponent: FC<{
   selectedTable: Table;
   conversionFields: ConversionFields;
   startCreatingConversionField: () => unknown;
   startEditingConversionField: Dispatch<
     SetStateAction<Partial<ConversionField>>
   >;
-}>(function ConversionFields({
+}> = ({
   selectedTable,
   conversionFields,
   startCreatingConversionField,
   startEditingConversionField,
-}) {
+}) => {
   const selectedTableConversionFields = conversionFields
     .map((conversionField) => ({
       field: selectedTable.getFieldByIdIfExists(conversionField.fieldId),
@@ -83,7 +83,7 @@ export const MemoConversionFields = memo<{
           </Heading>
           {selectedTableConversionFields.map(
             ({ field, originalField, conversionField }, index) => (
-              <MemoConversionField
+              <ConversionFieldComponent
                 key={index}
                 selectedTable={selectedTable}
                 field={field}
@@ -105,4 +105,4 @@ export const MemoConversionFields = memo<{
       </Button>
     </Box>
   );
-});
+};

@@ -6,6 +6,7 @@ export enum CONVERSION_TYPE {
   TEMPERATURE = "temperature",
   LENGTH = "length",
   VOLUME = "volume",
+  CURRENCY = "currency",
 }
 
 interface AbstractConversionField {
@@ -87,9 +88,54 @@ export interface VolumeConversionField extends AbstractConversionField {
   };
 }
 
+export enum CURRENCY {
+  CAD = "CAD",
+  EUR = "EUR",
+  HKD = "HKD",
+  ISK = "ISK",
+  PHP = "PHP",
+  DKK = "DKK",
+  HUF = "HUF",
+  CZK = "CZK",
+  AUD = "AUD",
+  RON = "RON",
+  SEK = "SEK",
+  IDR = "IDR",
+  INR = "INR",
+  BRL = "BRL",
+  RUB = "RUB",
+  HRK = "HRK",
+  JPY = "JPY",
+  THB = "THB",
+  CHF = "CHF",
+  SGD = "SGD",
+  PLN = "PLN",
+  BGN = "BGN",
+  TRY = "TRY",
+  CNY = "CNY",
+  NOK = "NOK",
+  NZD = "NZD",
+  ZAR = "ZAR",
+  USD = "USD",
+  MXN = "MXN",
+  ILS = "ILS",
+  GBP = "GBP",
+  KRW = "KRW",
+  MYR = "MYR",
+}
+
+export interface CurrencyConversionField extends AbstractConversionField {
+  type: CONVERSION_TYPE.CURRENCY;
+  options: {
+    sourceCurrency: CURRENCY;
+    destinationCurrency: CURRENCY;
+  };
+}
+
 export type ConversionField =
   | TemperatureConversionField
   | LengthConversionField
-  | VolumeConversionField;
+  | VolumeConversionField
+  | CurrencyConversionField;
 
 export type ConversionFields = readonly ConversionField[];

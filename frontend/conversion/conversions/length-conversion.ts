@@ -82,16 +82,16 @@ export const convertLength = (
   field: Field,
   options: LengthConversionField["options"]
 ) => {
-  const temperature = record.getCellValue(field);
+  const length = record.getCellValue(field);
 
-  if (typeof temperature !== "number" || !Number.isFinite(temperature)) {
+  if (typeof length !== "number" || !Number.isFinite(length)) {
     throw new Error(
       `Invalid temperature: number expected. Cannot convert record ${record.id}`
     );
   }
 
   return convertLengthFromMeter(
-    convertLengthToMeter(temperature, options.sourceUnit),
+    convertLengthToMeter(length, options.sourceUnit),
     options.destinationUnit
   );
 };

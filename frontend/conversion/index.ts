@@ -3,6 +3,7 @@ import { ConversionField, CONVERSION_TYPE } from "../types";
 import { convertLength } from "./conversions/length-conversion";
 import { convertTemperature } from "./conversions/temperature-conversion";
 import { convertVolume } from "./conversions/volume-conversion";
+import { convertCurrency } from "./conversions/currency-conversion";
 
 export const convert = async (
   record: Record,
@@ -16,5 +17,7 @@ export const convert = async (
       return convertLength(record, field, conversionField.options);
     case CONVERSION_TYPE.VOLUME:
       return convertVolume(record, field, conversionField.options);
+    case CONVERSION_TYPE.CURRENCY:
+      return await convertCurrency(record, field, conversionField.options);
   }
 };

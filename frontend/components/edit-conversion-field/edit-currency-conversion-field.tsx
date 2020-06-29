@@ -10,45 +10,76 @@ import {
 import React, { ChangeEvent, memo, useCallback, useState } from "react";
 import {
   CONVERSION_TYPE,
-  VolumeConversionField,
-  VOLUME_UNIT,
+  CurrencyConversionField,
+  CURRENCY,
 } from "../../types";
 import { saveConversionField } from "../../utils/save-conversion-field";
 import { BoxWithLoader } from "../box-with-loader";
 import { EditConversionField } from "../hooks/conversion-fields";
 import { LabeledComponent } from "../labeled-component";
 
-const availableVolumeUnits = [
-  // SI
-  { value: VOLUME_UNIT.CUBIC_MILLIMETER, label: "Cubic millimeter" },
-  { value: VOLUME_UNIT.CUBIC_CENTIMETER, label: "Cubic centimeter" },
-  { value: VOLUME_UNIT.CUBIC_DECIMETER, label: "Cubic decimeter" },
-  { value: VOLUME_UNIT.CUBIC_METER, label: "Cubic meter" },
-  { value: VOLUME_UNIT.CUBIC_KILOMETER, label: "Cubic kilometer" },
+const availableCurrencies = Object.values(CURRENCY).map((currency) => ({
+  value: currency,
+  label: currency,
+}));
 
-  // Non-SI
-  { value: VOLUME_UNIT.MILLILITER, label: "Milliliter" },
-  { value: VOLUME_UNIT.CENTILITER, label: "Centiliter" },
-  { value: VOLUME_UNIT.LITER, label: "Liter" },
+const currencySymbols: { [currency in CURRENCY]: string } = {
+  [CURRENCY.USD]: "$",
+  [CURRENCY.EUR]: "€",
+  [CURRENCY.CNY]: "¥",
+  [CURRENCY.JPY]: "¥",
+  [CURRENCY.GBP]: "£",
+  [CURRENCY.CAD]: "CA$",
+  [CURRENCY.HKD]: "HK$",
+  [CURRENCY.ISK]: "kr",
+  [CURRENCY.PHP]: "₱",
+  [CURRENCY.DKK]: "Kr.",
+  [CURRENCY.HUF]: "Ft",
+  [CURRENCY.CZK]: "Kč",
+  [CURRENCY.AUD]: "AUD",
+  [CURRENCY.RON]: "lei",
+  [CURRENCY.SEK]: "kr",
+  [CURRENCY.IDR]: "Rp",
+  [CURRENCY.INR]: "₹",
+  [CURRENCY.BRL]: "R$",
+  [CURRENCY.RUB]: "₽",
+  [CURRENCY.HRK]: "kn",
+  [CURRENCY.THB]: "฿",
+  [CURRENCY.CHF]: "Fr.",
+  [CURRENCY.SGD]: "S$",
+  [CURRENCY.PLN]: "zł",
+  [CURRENCY.BGN]: "Лв.",
+  [CURRENCY.TRY]: "₺",
+  [CURRENCY.NOK]: "kr",
+  [CURRENCY.NZD]: "NZ$",
+  [CURRENCY.ZAR]: "R",
+  [CURRENCY.MXN]: "Mex$",
+  [CURRENCY.ILS]: "₪",
+  [CURRENCY.KRW]: "₩",
+  [CURRENCY.MYR]: "RM",
+};
 
-  // Imperial/US
-  { value: VOLUME_UNIT.CUBIC_INCH, label: "Cubic inch" },
-  { value: VOLUME_UNIT.CUBIC_FOOT, label: "Cubic foot" },
-  { value: VOLUME_UNIT.PINT, label: "Pint" },
-  { value: VOLUME_UNIT.GALLON, label: "Gallon" },
-  { value: VOLUME_UNIT.BARREL, label: "Barrel" },
-];
+const tryToGuessCurrencyFromField = (field?: Field) => {
+  if (field && field.type === FieldType.CURRENCY && field.options.symbol) {
+    for (const currency in currencySymbols) {
+      const symbol = currencySymbols[currency];
+      if (symbol === field.options.symbol) {
+        return currency as CURRENCY;
+      }
+    }
+  }
+  return undefined;
+};
 
 const minPrecision = 0;
-const maxPrecision = 8;
-const defaultPrecision = 1;
+const maxPrecision = 7;
 
-export const MemoEditVolumeConversionField = memo<{
+export const MemoEditCurrencyConversionField = memo<{
   selectedTable: Table;
-  conversionField?: Partial<VolumeConversionField>;
+  conversionField?: Partial<CurrencyConversionField>;
   editConversionField: EditConversionField;
   close: () => unknown;
-}>(function EditVolumeConversionField({
+}>(function EditCurrencyConversionField({
   selectedTable,
   conversionField,
   editConversionField,
@@ -67,10 +98,12 @@ export const MemoEditVolumeConversionField = memo<{
     : undefined;
 
   const [options, setOptions] = useState<
-    Partial<VolumeConversionField["options"]>
+    Partial<CurrencyConversionField["options"]>
   >({
-    sourceUnit: conversionField?.options?.sourceUnit,
-    destinationUnit: conversionField?.options?.destinationUnit,
+    sourceCurrency:
+      conversionField?.options?.sourceCurrency ??
+      tryToGuessCurrencyFromField(field),
+    destinationCurrency: conversionField?.options?.destinationCurrency,
   });
 
   const [name, setName] = useState(field?.name || "");
@@ -80,7 +113,7 @@ export const MemoEditVolumeConversionField = memo<{
   ]);
 
   const [precision, setPrecision] = useState<number>(
-    (field?.options?.precision as number | undefined) ?? defaultPrecision
+    (field?.options?.precision as number | undefined) ?? 2
   );
 
   const onChangePrecision = useCallback(
@@ -96,20 +129,20 @@ export const MemoEditVolumeConversionField = memo<{
   const [loading, setLoading] = useState(false);
 
   const save = useCallback(async () => {
-    const { sourceUnit, destinationUnit } = options;
-    if (!sourceUnit || !destinationUnit) {
+    const { sourceCurrency, destinationCurrency } = options;
+    if (!sourceCurrency || !destinationCurrency) {
       return;
     }
     setLoading(true);
-    await saveConversionField<VolumeConversionField>({
+    await saveConversionField<CurrencyConversionField>({
       selectedTable,
       fieldId: field?.id,
-      fieldType: FieldType.NUMBER,
-      fieldOptions: { precision },
-      name: name || `${originalField.name} (${destinationUnit})`,
+      fieldType: FieldType.CURRENCY,
+      fieldOptions: { precision, symbol: currencySymbols[destinationCurrency] },
+      name: name || `${originalField.name} (${destinationCurrency})`,
       originalField,
-      conversionType: CONVERSION_TYPE.VOLUME,
-      options: { sourceUnit, destinationUnit },
+      conversionType: CONVERSION_TYPE.CURRENCY,
+      options: { sourceCurrency, destinationCurrency },
       editConversionField,
     });
     setLoading(false);
@@ -127,7 +160,7 @@ export const MemoEditVolumeConversionField = memo<{
 
   return (
     <BoxWithLoader display="flex" flexDirection="column" loading={loading}>
-      <Heading size="small">Volume Conversion &#128230;</Heading>
+      <Heading size="small">Currency Conversion &#128230;</Heading>
 
       <Heading size="xsmall" marginTop={3}>
         Source field
@@ -137,8 +170,10 @@ export const MemoEditVolumeConversionField = memo<{
         label="Field"
         hint="Select the field you want to convert"
         error={
-          originalField && originalField.type !== FieldType.NUMBER
-            ? `We do not support the fields of type "${originalField.type}", please select a field of type "number"`
+          originalField &&
+          originalField.type !== FieldType.NUMBER &&
+          originalField.type !== FieldType.CURRENCY
+            ? `We do not support the fields of type "${originalField.type}", please select a field of type "currency" or "number"`
             : undefined
         }
         marginTop={2}
@@ -151,22 +186,32 @@ export const MemoEditVolumeConversionField = memo<{
               : undefined
           }
           onChange={useCallback(
-            (field: Field) => setOriginalFieldId(field.id),
-            [setOriginalFieldId]
+            (field: Field) => {
+              setOriginalFieldId(field.id);
+              const guessedCurrency = tryToGuessCurrencyFromField(field);
+              if (guessedCurrency) {
+                setOptions({
+                  ...options,
+                  sourceCurrency: guessedCurrency,
+                });
+              }
+            },
+            [options]
           )}
         />
       </LabeledComponent>
 
       <LabeledComponent
-        label="Unit"
-        hint="Specify the unit used in the source field"
+        label="Currency"
+        hint="Specify the currency used in the source field"
         marginTop={2}
       >
         <Select
-          options={availableVolumeUnits}
-          value={options.sourceUnit}
+          options={availableCurrencies}
+          value={options.sourceCurrency}
           onChange={useCallback(
-            (unit: VOLUME_UNIT) => setOptions({ ...options, sourceUnit: unit }),
+            (currency: CURRENCY) =>
+              setOptions({ ...options, sourceCurrency: currency }),
             [options, setOptions]
           )}
         />
@@ -177,18 +222,18 @@ export const MemoEditVolumeConversionField = memo<{
       </Heading>
 
       <LabeledComponent
-        label="Unit"
-        hint={`Specify the unit that you want in the ${
+        label="Currency"
+        hint={`Specify the currency that you want in the ${
           field ? "destination" : "new"
         } field`}
         marginTop={2}
       >
         <Select
-          options={availableVolumeUnits}
-          value={options.destinationUnit}
+          options={availableCurrencies}
+          value={options.destinationCurrency}
           onChange={useCallback(
-            (unit: VOLUME_UNIT) =>
-              setOptions({ ...options, destinationUnit: unit }),
+            (currency: CURRENCY) =>
+              setOptions({ ...options, destinationCurrency: currency }),
             [options, setOptions]
           )}
         />
@@ -234,7 +279,9 @@ export const MemoEditVolumeConversionField = memo<{
           icon="check"
           onClick={save}
           disabled={
-            !originalField || !options.sourceUnit || !options.destinationUnit
+            !originalField ||
+            !options.sourceCurrency ||
+            !options.destinationCurrency
           }
           marginLeft={1}
         >

@@ -40,7 +40,8 @@ const availableLengthUnits = [
 ];
 
 const minPrecision = 0;
-const maxPrecision = 6;
+const maxPrecision = 8;
+const defaultPrecision = 1;
 
 export const MemoEditLengthConversionField = memo<{
   selectedTable: Table;
@@ -79,7 +80,7 @@ export const MemoEditLengthConversionField = memo<{
   ]);
 
   const [precision, setPrecision] = useState<number>(
-    (field?.options?.precision as number | undefined) ?? 1
+    (field?.options?.precision as number | undefined) ?? defaultPrecision
   );
 
   const onChangePrecision = useCallback(

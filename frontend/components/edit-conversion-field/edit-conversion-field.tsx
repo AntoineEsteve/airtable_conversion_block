@@ -7,14 +7,17 @@ import {
   TemperatureConversionField,
   LengthConversionField,
   VolumeConversionField,
+  CurrencyConversionField,
 } from "../../types";
 import { EditConversionField } from "../hooks/conversion-fields";
 import { LabeledComponent } from "../labeled-component";
 import { MemoEditTemperatureConversionField } from "./edit-temperature-conversion-field";
 import { MemoEditLengthConversionField } from "./edit-length-conversion-field";
 import { MemoEditVolumeConversionField } from "./edit-volume-conversion-field";
+import { MemoEditCurrencyConversionField } from "./edit-currency-conversion-field";
 
 const availableConversionTypes = [
+  { value: CONVERSION_TYPE.CURRENCY, label: "Currency" },
   { value: CONVERSION_TYPE.LENGTH, label: "Length" },
   { value: CONVERSION_TYPE.VOLUME, label: "Volume" },
   { value: CONVERSION_TYPE.TEMPERATURE, label: "Temperature" },
@@ -59,6 +62,13 @@ export const MemoEditConversionField = memo<{
           <MemoEditVolumeConversionField
             selectedTable={selectedTable}
             conversionField={conversionField as VolumeConversionField}
+            editConversionField={editConversionField}
+            close={close}
+          />
+        ) : conversionType === CONVERSION_TYPE.CURRENCY ? (
+          <MemoEditCurrencyConversionField
+            selectedTable={selectedTable}
+            conversionField={conversionField as CurrencyConversionField}
             editConversionField={editConversionField}
             close={close}
           />

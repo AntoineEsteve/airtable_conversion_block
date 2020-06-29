@@ -78,16 +78,16 @@ export const convertVolume = (
   field: Field,
   options: VolumeConversionField["options"]
 ) => {
-  const temperature = record.getCellValue(field);
+  const volume = record.getCellValue(field);
 
-  if (typeof temperature !== "number" || !Number.isFinite(temperature)) {
+  if (typeof volume !== "number" || !Number.isFinite(volume)) {
     throw new Error(
       `Invalid temperature: number expected. Cannot convert record ${record.id}`
     );
   }
 
   return convertCubicMeterToVolume(
-    convertVolumeToCubicMeter(temperature, options.sourceUnit),
+    convertVolumeToCubicMeter(volume, options.sourceUnit),
     options.destinationUnit
   );
 };

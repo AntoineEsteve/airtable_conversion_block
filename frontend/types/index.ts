@@ -5,6 +5,7 @@ export interface AbstractConversion {
 export enum CONVERSION_TYPE {
   TEMPERATURE = "temperature",
   LENGTH = "length",
+  AREA = "area",
   VOLUME = "volume",
   CURRENCY = "currency",
 }
@@ -56,6 +57,34 @@ export interface LengthConversionField extends AbstractConversionField {
   options: {
     sourceUnit: LENGTH_UNIT;
     destinationUnit: LENGTH_UNIT;
+  };
+}
+
+export enum AREA_UNIT {
+  // SI
+  SQUARE_MILLIMETER = "square_millimeter",
+  SQUARE_CENTIMETER = "square_centimeter",
+  SQUARE_DECIMETER = "square_decimeter",
+  SQUARE_METER = "square_meter",
+  SQUARE_KILOMETER = "square_kilometer",
+
+  // Non-SI
+  ARE = "are",
+  HECTARE = "hectare",
+  ACRE = "acre",
+
+  // Imperial/US
+  SQUARE_INCH = "square_inch",
+  SQUARE_FOOT = "square_foot",
+  SQUARE_YARD = "square_yard",
+  SQUARE_MILE = "square_mile",
+}
+
+export interface AreaConversionField extends AbstractConversionField {
+  type: CONVERSION_TYPE.AREA;
+  options: {
+    sourceUnit: AREA_UNIT;
+    destinationUnit: AREA_UNIT;
   };
 }
 
@@ -136,6 +165,7 @@ export interface CurrencyConversionField extends AbstractConversionField {
 export type ConversionField =
   | TemperatureConversionField
   | LengthConversionField
+  | AreaConversionField
   | VolumeConversionField
   | CurrencyConversionField;
 

@@ -8,6 +8,7 @@ import {
   LengthConversionField,
   TemperatureConversionField,
   VolumeConversionField,
+  AreaConversionField,
 } from "../../types";
 import { EditConversionField } from "../hooks/conversion-fields";
 import { LabeledComponent } from "../labeled-component";
@@ -15,10 +16,12 @@ import { EditCurrencyConversionFieldComponent } from "./edit-currency-conversion
 import { EditLengthConversionFieldComponent } from "./edit-length-conversion-field";
 import { EditTemperatureConversionFieldComponent } from "./edit-temperature-conversion-field";
 import { EditVolumeConversionFieldComponent } from "./edit-volume-conversion-field";
+import { EditAreaConversionFieldComponent } from "./edit-area-conversion-field";
 
 const availableConversionTypes = [
   { value: CONVERSION_TYPE.CURRENCY, label: "Currency" },
   { value: CONVERSION_TYPE.LENGTH, label: "Length" },
+  { value: CONVERSION_TYPE.AREA, label: "Area" },
   { value: CONVERSION_TYPE.VOLUME, label: "Volume" },
   { value: CONVERSION_TYPE.TEMPERATURE, label: "Temperature" },
 ];
@@ -50,6 +53,13 @@ export const EditConversionFieldComponent: FC<{
           <EditLengthConversionFieldComponent
             selectedTable={selectedTable}
             conversionField={conversionField as LengthConversionField}
+            editConversionField={editConversionField}
+            close={close}
+          />
+        ) : conversionType === CONVERSION_TYPE.AREA ? (
+          <EditAreaConversionFieldComponent
+            selectedTable={selectedTable}
+            conversionField={conversionField as AreaConversionField}
             editConversionField={editConversionField}
             close={close}
           />

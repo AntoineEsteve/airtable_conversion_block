@@ -96,17 +96,25 @@ export const EditLengthConversionFieldComponent: FC<{
       return;
     }
     setLoading(true);
-    await saveConversionField<LengthConversionField>({
-      selectedTable,
-      fieldId: field?.id,
-      fieldType: FieldType.NUMBER,
-      fieldOptions: { precision },
-      name: name || `${originalField.name} (${destinationUnit})`,
-      originalField,
-      conversionType: CONVERSION_TYPE.LENGTH,
-      options: { sourceUnit, destinationUnit },
-      editConversionField,
-    });
+    try {
+      await saveConversionField<LengthConversionField>({
+        selectedTable,
+        fieldId: field?.id,
+        fieldType: FieldType.NUMBER,
+        fieldOptions: { precision },
+        name: name || `${originalField.name} (${destinationUnit})`,
+        originalField,
+        conversionType: CONVERSION_TYPE.LENGTH,
+        options: { sourceUnit, destinationUnit },
+        editConversionField,
+      });
+    } catch (error) {
+      console.error(
+        "An error occured while trying to save a conversion field",
+        error
+      );
+      // TODO: Notify the user
+    }
     setLoading(false);
     close();
   }, [

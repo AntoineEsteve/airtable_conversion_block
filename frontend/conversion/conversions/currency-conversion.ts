@@ -23,6 +23,7 @@ async function getTodayExchangeRates() {
     date,
     exchangeRatesPromise,
   };
+  exchangeRatesPromise.catch(() => (dailyCurrencyRatesCache = undefined));
   return await exchangeRatesPromise;
 }
 

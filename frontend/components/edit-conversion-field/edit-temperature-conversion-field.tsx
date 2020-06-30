@@ -81,17 +81,25 @@ export const EditTemperatureConversionFieldComponent: FC<{
       return;
     }
     setLoading(true);
-    await saveConversionField<TemperatureConversionField>({
-      selectedTable,
-      fieldId: field?.id,
-      fieldType: FieldType.NUMBER,
-      fieldOptions: { precision },
-      name: name || `${originalField.name} (${destinationUnit})`,
-      originalField,
-      conversionType: CONVERSION_TYPE.TEMPERATURE,
-      options: { sourceUnit, destinationUnit },
-      editConversionField,
-    });
+    try {
+      await saveConversionField<TemperatureConversionField>({
+        selectedTable,
+        fieldId: field?.id,
+        fieldType: FieldType.NUMBER,
+        fieldOptions: { precision },
+        name: name || `${originalField.name} (${destinationUnit})`,
+        originalField,
+        conversionType: CONVERSION_TYPE.TEMPERATURE,
+        options: { sourceUnit, destinationUnit },
+        editConversionField,
+      });
+    } catch (error) {
+      console.error(
+        "An error occured while trying to save a conversion field",
+        error
+      );
+      // TODO: Notify the user
+    }
     setLoading(false);
     close();
   }, [

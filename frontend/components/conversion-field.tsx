@@ -40,12 +40,20 @@ export const ConversionFieldComponent: FC<{
 
   const convert = useCallback(async () => {
     setLoading(true);
-    await convertAllRecords({
-      selectedTable,
-      field,
-      originalField,
-      conversionField,
-    });
+    try {
+      await convertAllRecords({
+        selectedTable,
+        field,
+        originalField,
+        conversionField,
+      });
+    } catch (error) {
+      console.error(
+        "An error occured while trying to convert all records",
+        error
+      );
+      // TODO: Notify the user
+    }
     setLoading(false);
   }, [conversionField, field, originalField, selectedTable]);
 

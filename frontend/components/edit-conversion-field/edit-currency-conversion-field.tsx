@@ -129,17 +129,28 @@ export const EditCurrencyConversionFieldComponent: FC<{
       return;
     }
     setLoading(true);
-    await saveConversionField<CurrencyConversionField>({
-      selectedTable,
-      fieldId: field?.id,
-      fieldType: FieldType.CURRENCY,
-      fieldOptions: { precision, symbol: currencySymbols[destinationCurrency] },
-      name: name || `${originalField.name} (${destinationCurrency})`,
-      originalField,
-      conversionType: CONVERSION_TYPE.CURRENCY,
-      options: { sourceCurrency, destinationCurrency },
-      editConversionField,
-    });
+    try {
+      await saveConversionField<CurrencyConversionField>({
+        selectedTable,
+        fieldId: field?.id,
+        fieldType: FieldType.CURRENCY,
+        fieldOptions: {
+          precision,
+          symbol: currencySymbols[destinationCurrency],
+        },
+        name: name || `${originalField.name} (${destinationCurrency})`,
+        originalField,
+        conversionType: CONVERSION_TYPE.CURRENCY,
+        options: { sourceCurrency, destinationCurrency },
+        editConversionField,
+      });
+    } catch (error) {
+      console.error(
+        "An error occured while trying to save a conversion field",
+        error
+      );
+      // TODO: Notify the user
+    }
     setLoading(false);
     close();
   }, [

@@ -1,5 +1,5 @@
 import { Table } from "@airtable/blocks/models";
-import { Box, Button, Heading, Text } from "@airtable/blocks/ui";
+import { Box, Button, Heading, Text, colors } from "@airtable/blocks/ui";
 import React, { Dispatch, FC, SetStateAction } from "react";
 import { ConversionField, ConversionFields } from "../types";
 import { ConversionFieldComponent } from "./conversion-field";
@@ -27,11 +27,14 @@ export const ConversionFieldsComponent: FC<{
     }))
     .filter(({ field, originalField }) => !!field && !!originalField);
 
+  const canCreateField = selectedTable.unstable_hasPermissionToCreateField();
+  const canUpdateRecord = selectedTable.hasPermissionToUpdateRecord();
+
   return (
     <Box display="flex" flexDirection="column">
       {selectedTableConversionFields.length === 0 ? (
         <>
-          <Heading size="small" marginBottom={2} textAlign="center">
+          <Heading size="small" marginBottom={2}>
             Welcome to the Conversion&#160;Block!&#160;&#127881;
           </Heading>
           <Text marginBottom={2}>
@@ -48,7 +51,7 @@ export const ConversionFieldsComponent: FC<{
                 currency
               </Text>
             </Text>
-            <Text marginBottom={1} marginLeft={3} fontSize={11}>
+            <Text marginBottom={1} marginLeft={3} fontSize="smaller">
               with up-to-date currency exchange rates
             </Text>
 
@@ -106,9 +109,23 @@ export const ConversionFieldsComponent: FC<{
         onClick={startCreatingConversionField}
         icon="plus"
         variant="primary"
+        disabled={!canCreateField || !canUpdateRecord}
       >
         New Conversion
       </Button>
+      {!canCreateField || !canUpdateRecord ? (
+        <Text marginTop={1} fontSize="smaller" textColor={colors.GRAY}>
+          <Text
+            display="inline"
+            fontWeight={500}
+            fontSize="inherit"
+            textColor={colors.GRAY}
+          >
+            Block disabled:
+          </Text>{" "}
+          You need to be creator of this base to use it
+        </Text>
+      ) : null}
     </Box>
   );
 };

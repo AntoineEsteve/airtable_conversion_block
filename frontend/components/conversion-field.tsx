@@ -51,6 +51,9 @@ export const ConversionFieldComponent: FC<{
 
   const [openDeleteDialog, toggleDeleteDialog] = useToggle(false);
 
+  const canCreateField = selectedTable.unstable_hasPermissionToCreateField();
+  const canUpdateRecord = selectedTable.hasPermissionToUpdateRecord();
+
   return (
     <BoxWithLoader
       display="flex"
@@ -63,35 +66,39 @@ export const ConversionFieldComponent: FC<{
     >
       <Text flex="1 1 auto" minWidth={0} marginRight={2}>
         <TextEllipsis fontWeight={500}>{field.name}</TextEllipsis>
-        <TextEllipsis fontSize={10} display="flex" alignItems="center">
+        <TextEllipsis fontSize="smaller" display="flex" alignItems="center">
           <Icon name="formula" size={10} marginRight={1} /> {originalField.name}
         </TextEllipsis>
       </Text>
 
-      <Button
-        flex="0 0 auto"
-        onClick={convert}
-        size="small"
-        variant="secondary"
-      >
-        <RefreshIcon />
-      </Button>
+      {canCreateField && canUpdateRecord ? (
+        <>
+          <Button
+            flex="0 0 auto"
+            onClick={convert}
+            size="small"
+            variant="secondary"
+          >
+            <RefreshIcon />
+          </Button>
 
-      <Button
-        flex="0 0 auto"
-        icon="cog"
-        onClick={edit}
-        size="small"
-        variant="secondary"
-      />
+          <Button
+            flex="0 0 auto"
+            icon="cog"
+            onClick={edit}
+            size="small"
+            variant="secondary"
+          />
 
-      <Button
-        flex="0 0 auto"
-        icon="trash"
-        size="small"
-        variant="secondary"
-        onClick={toggleDeleteDialog}
-      />
+          <Button
+            flex="0 0 auto"
+            icon="trash"
+            size="small"
+            variant="secondary"
+            onClick={toggleDeleteDialog}
+          />
+        </>
+      ) : null}
 
       {openDeleteDialog && (
         <Dialog onClose={toggleDeleteDialog} width="320px">

@@ -123,7 +123,7 @@ export const EditVolumeConversionFieldComponent: FC<{
 
   return (
     <BoxWithLoader display="flex" flexDirection="column" loading={loading}>
-      <Heading size="small">Volume Conversion &#128230;</Heading>
+      <Heading size="small">Volume Conversion &#127759;</Heading>
 
       <Heading size="xsmall" marginTop={3}>
         Source field

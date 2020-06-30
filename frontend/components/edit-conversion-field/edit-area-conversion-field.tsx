@@ -117,7 +117,7 @@ export const EditAreaConversionFieldComponent: FC<{
 
   return (
     <BoxWithLoader display="flex" flexDirection="column" loading={loading}>
-      <Heading size="small">Area Conversion &#128207;</Heading>
+      <Heading size="small">Area Conversion &#128506;</Heading>
 
       <Heading size="xsmall" marginTop={3}>
         Source field

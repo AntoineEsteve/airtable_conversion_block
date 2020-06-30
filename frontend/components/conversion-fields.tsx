@@ -31,50 +31,56 @@ export const ConversionFieldsComponent: FC<{
     <Box display="flex" flexDirection="column">
       {selectedTableConversionFields.length === 0 ? (
         <>
-          <Heading size="small" marginBottom={2}>
-            Welcome to the Conversion Block! &#127881;
+          <Heading size="small" marginBottom={2} textAlign="center">
+            Welcome to the Conversion&#160;Block!&#160;&#127881;
           </Heading>
           <Text marginBottom={2}>
-            This block allows you to create new fields converting other fields
-            values into the one that you need.
+            This block allows you to create new fields which convert existing
+            fields into the units you need.
           </Text>
           <Text marginBottom={1} fontWeight={500}>
-            Few examples:
+            A few examples:
           </Text>
-          <ul
-            style={{
-              listStyleType: "circle",
-              paddingInlineStart: 24,
-              margin: "0 0 8px 0",
-            }}
-          >
-            <li>
-              <Text marginBottom={1}>
-                Convert currencies &#128178; with up-to-date current rates,
-                examples: USD&#8594;EUR, JPY&#8594;USD...
+          <Box marginBottom={1} marginLeft={3}>
+            <Text>
+              &#128178; Convert{" "}
+              <Text display="inline" fontWeight={500}>
+                currency
               </Text>
-            </li>
-            <li>
-              <Text marginBottom={1}>
-                Convert lengths &#128207;: inches&#8594;meters,
-                kilometers&#8594;yard, foot&#8594;centimeters...
+            </Text>
+            <Text marginBottom={1} marginLeft={3} fontSize={11}>
+              with up-to-date currency exchange rates
+            </Text>
+
+            <Text marginBottom={1}>
+              &#128207; Convert{" "}
+              <Text display="inline" fontWeight={500}>
+                length
               </Text>
-            </li>
-            <li>
-              <Text marginBottom={1}>
-                Convert volumes &#128230;: liter&#8594;cubic&#160;meter,
-                cubic&#160;millimeter&#8594;pint,
-                milliliter&#8594;cubic&#160;inches...
+            </Text>
+
+            <Text marginBottom={1}>
+              &#128506; Convert{" "}
+              <Text display="inline" fontWeight={500}>
+                surface
               </Text>
-            </li>
-            <li>
-              <Text marginBottom={1}>
-                Convert temperatures &#127777;: celsius&#8594;kelvin,
-                farenheit&#8594;celsius...
+            </Text>
+
+            <Text marginBottom={1}>
+              &#127759; Convert{" "}
+              <Text display="inline" fontWeight={500}>
+                volume
               </Text>
-            </li>
-          </ul>
-          <Text marginBottom={2}>And much more! &#128293;</Text>
+            </Text>
+
+            <Text marginBottom={1}>
+              &#127777; Convert{" "}
+              <Text display="inline" fontWeight={500}>
+                temperature
+              </Text>
+            </Text>
+          </Box>
+          <Text marginBottom={2}>And more to come...</Text>
         </>
       ) : (
         <>
@@ -101,7 +107,7 @@ export const ConversionFieldsComponent: FC<{
         icon="plus"
         variant="primary"
       >
-        New conversion
+        New Conversion
       </Button>
     </Box>
   );

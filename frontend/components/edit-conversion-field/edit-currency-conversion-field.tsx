@@ -155,7 +155,7 @@ export const EditCurrencyConversionFieldComponent: FC<{
 
   return (
     <BoxWithLoader display="flex" flexDirection="column" loading={loading}>
-      <Heading size="small">Currency Conversion &#128230;</Heading>
+      <Heading size="small">Currency Conversion &#128178;</Heading>
 
       <Heading size="xsmall" marginTop={3}>
         Source field

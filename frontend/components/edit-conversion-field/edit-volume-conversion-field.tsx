@@ -34,6 +34,7 @@ const availableVolumeUnits = [
   // Imperial/US
   { value: VOLUME_UNIT.CUBIC_INCH, label: "Cubic inch" },
   { value: VOLUME_UNIT.CUBIC_FOOT, label: "Cubic foot" },
+  { value: VOLUME_UNIT.CUP, label: "Cup" },
   { value: VOLUME_UNIT.PINT, label: "Pint" },
   { value: VOLUME_UNIT.GALLON, label: "Gallon" },
   { value: VOLUME_UNIT.BARREL, label: "Barrel" },

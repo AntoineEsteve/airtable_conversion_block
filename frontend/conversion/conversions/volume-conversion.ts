@@ -28,6 +28,8 @@ const convertVolumeToCubicMeter = (volume: number, unit: VOLUME_UNIT) => {
       return volume * 0.0000163871;
     case VOLUME_UNIT.CUBIC_FOOT:
       return volume * 0.0283168;
+    case VOLUME_UNIT.CUP:
+      return volume * 0.000236588;
     case VOLUME_UNIT.PINT:
       return volume * 0.000473176;
     case VOLUME_UNIT.GALLON:
@@ -64,6 +66,8 @@ const convertCubicMeterToVolume = (volume: number, unit: VOLUME_UNIT) => {
       return volume / 0.0000163871;
     case VOLUME_UNIT.CUBIC_FOOT:
       return volume / 0.0283168;
+    case VOLUME_UNIT.CUP:
+      return volume / 0.000236588;
     case VOLUME_UNIT.PINT:
       return volume / 0.000473176;
     case VOLUME_UNIT.GALLON:

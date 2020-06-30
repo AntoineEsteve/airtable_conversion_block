@@ -75,6 +75,7 @@ export enum VOLUME_UNIT {
   // Imperial/US
   CUBIC_INCH = "cubic_inch",
   CUBIC_FOOT = "cubic_foot",
+  CUP = "cup",
   PINT = "pint",
   GALLON = "gallon",
   BARREL = "barrel",

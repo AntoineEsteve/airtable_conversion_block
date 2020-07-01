@@ -25,3 +25,9 @@ I implemented 5 conversions: currency, length, area, volume, temperature.
 Some of them are a synchronous calculation and could be replaced with a formula, but this block is also working with asynchronous conversions like "currency" that require to fetch first the currency exchange rates of the day.
 
 Thanks to this system, we could easily add more complex conversions like changing the file type/size/quality of file attachments. Any asynchronous operation which converts a value into another one is possible.
+
+## Demo
+
+![Currency Demo](./media/demo_currency.gif)
+
+![Temperature Demo](./media/demo_temperature.gif)

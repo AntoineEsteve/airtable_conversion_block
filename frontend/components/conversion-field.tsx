@@ -75,7 +75,7 @@ export const ConversionFieldComponent: FC<{
       <Text flex="1 1 auto" minWidth={0} marginRight={2}>
         <TextEllipsis fontWeight={500}>{field.name}</TextEllipsis>
         <TextEllipsis fontSize="smaller" display="flex" alignItems="center">
-          <Icon name="formula" size={10} marginRight={1} /> {originalField.name}
+          <Icon name="code" size={10} marginRight={1} /> {originalField.name}
         </TextEllipsis>
       </Text>
 

@@ -21,5 +21,7 @@ If you store the list of your employees and their respective sizes to send them 
 ## Next steps
 
 I implemented 5 conversions: currency, length, area, volume, temperature.
+
 Some of them are a synchronous calculation and could be replaced with a formula, but this block is also working with asynchronous conversions like "currency" that require to fetch first the currency exchange rates of the day.
+
 Thanks to this system, we could easily add more complex conversions like changing the file type/size/quality of file attachments. Any asynchronous operation which converts a value into another one is possible.

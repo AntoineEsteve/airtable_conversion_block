@@ -16,17 +16,24 @@ export async function convertAllRecords({
 }) {
   const queryResult = await selectedTable.selectRecordsAsync();
 
-  const updates = await Promise.all(
-    queryResult.recordIds.map(async (recordId) => {
-      const record = queryResult.getRecordById(recordId);
-      return {
-        id: recordId,
-        fields: {
-          [field.id]: await convert(record, originalField, conversionField),
-        },
-      };
-    })
-  );
+  const updates = (
+    await Promise.all(
+      queryResult.recordIds.map(async (recordId) => {
+        const record = queryResult.getRecordById(recordId);
+        try {
+          return {
+            id: recordId,
+            fields: {
+              [field.id]: await convert(record, originalField, conversionField),
+            },
+          };
+        } catch (error) {
+          console.error(`Could not convert the record ${record.id}`, error);
+          return undefined;
+        }
+      })
+    )
+  ).filter((update) => !!update);
 
   // updateRecordsAsync only allow 50 updates at a time
   for (const updateBatch of chunk(updates, 50)) {

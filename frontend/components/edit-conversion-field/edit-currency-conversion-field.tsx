@@ -179,7 +179,7 @@ export const EditCurrencyConversionFieldComponent: FC<{
           originalField &&
           originalField.type !== FieldType.NUMBER &&
           originalField.type !== FieldType.CURRENCY
-            ? `We do not support the fields of type "${originalField.type}", please select a field of type "currency" or "number"`
+            ? `We do not support the fields of type "${originalField.type}", please select a field of type "${FieldType.CURRENCY}" or "${FieldType.NUMBER}"`
             : undefined
         }
         marginTop={2}
@@ -286,6 +286,8 @@ export const EditCurrencyConversionFieldComponent: FC<{
           onClick={save}
           disabled={
             !originalField ||
+            (originalField.type !== FieldType.CURRENCY &&
+              originalField.type !== FieldType.NUMBER) ||
             !options.sourceCurrency ||
             !options.destinationCurrency
           }

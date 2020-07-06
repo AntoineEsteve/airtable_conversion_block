@@ -136,7 +136,7 @@ export const EditAreaConversionFieldComponent: FC<{
         hint="Select the field you want to convert"
         error={
           originalField && originalField.type !== FieldType.NUMBER
-            ? `We do not support the fields of type "${originalField.type}", please select a field of type "number"`
+            ? `We do not support the fields of type "${originalField.type}", please select a field of type "${FieldType.NUMBER}"`
             : undefined
         }
         marginTop={2}
@@ -232,7 +232,10 @@ export const EditAreaConversionFieldComponent: FC<{
           icon="check"
           onClick={save}
           disabled={
-            !originalField || !options.sourceUnit || !options.destinationUnit
+            !originalField ||
+            originalField.type !== FieldType.NUMBER ||
+            !options.sourceUnit ||
+            !options.destinationUnit
           }
           marginLeft={1}
         >
